@@ -59,6 +59,25 @@ def calculate_page_rank(adjacency_matrix, alpha=0.85):
     # Normalize to sum to 1
     principal_eigenvector = principal_eigenvector / np.sum(principal_eigenvector)
     
+    u_list = []
+    u=np.full(num_nodes,1/num_nodes)
+    u_list.append(u)
+    for i in range(100):
+        u=u@M
+        u_list.append(u)
+
+    distance = []
+    for u in u_list:
+        distance.append(0.5 * np.sum(np.abs(u - principal_eigenvector)))
+
+
+
+    x_values = np.arange(101)
+    plt.plot(x_values, distance, label="total distance")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
     return principal_eigenvector
 
 def plot_page_rank(page_rank):
@@ -77,7 +96,7 @@ if __name__ == '__main__':
 
     matrix = read_edges_and_create_adjacency_matrix(path)
     
-    pr = calculate_page_rank(matrix, alpha=0.1)
+    pr = calculate_page_rank(matrix, alpha=0.9999)
     #print(pr)
     print("sum of page rank: ", np.sum(pr))
 
